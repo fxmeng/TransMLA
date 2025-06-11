@@ -123,12 +123,14 @@ class LoraQKV(nn.Module):
         if balance_kv_ratio is not None:
             k_outputs_norm = torch.cat([key.reshape(-1, self.latent_dim)[:,self.qk_mqa_dim:] for key in key_outputs]).norm(p=2,dim=0).mean()
             v_outputs_norm = torch.cat([value.reshape(-1, self.latent_dim)[:,self.qk_mqa_dim:] for value in value_outputs]).norm(p=2,dim=0).mean()
-            ratio = k_outputs_norm/(v_outputs_norm * balance_kv_ratio)
-            self_attn.k_proj.weight.data[self.qk_mqa_dim:] = self_attn.k_proj.weight.data[self.qk_mqa_dim:] / ratio
-            self_attn.k_up_proj.weight.data[:, self.qk_mqa_dim:] = self_attn.k_up_proj.weight.data[:, self.qk_mqa_dim:] * ratio
+            ratio = k_outputs_norm / (v_outputs_norm * balance_kv_ratio)
+            self_attn.k_proj.weight.data[self.qk_mqa_dim:] /= ratio
+            if self.attention_bias:
+                self_attn.k_proj.bias.data[self.qk_mqa_dim:] /= ratio
+            self_attn.k_up_proj.weight.data[:, self.qk_mqa_dim:] *= ratio
         else:
             ratio = 1
-        kv_outputs = [torch.cat([key_outputs[i][:,:,qk_mqa_dim:] / ratio, value_outputs[i]],dim=-1) for i in range(len(key_outputs))]
+        kv_outputs = [torch.cat([key_outputs[i][:,:,qk_mqa_dim:] / ratio, value_outputs[i]], dim=-1) for i in range(len(key_outputs))]
 
         # -----------------apply pca on the query and key/value outputs-----------------
         if self.q_lora_rank is not None:
