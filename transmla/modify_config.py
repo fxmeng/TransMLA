@@ -40,10 +40,11 @@ settings["mistral"] = settings["llama"]
 
 
 def modify_config(model, config_path: str, args):
+    import json
+
+    with open(config_path, "r") as f:
+        config = json.load(f)
     setting = settings[model.config.model_type]
-    config_class = setting["config_class"]
-    config = config_class.from_pretrained(config_path)
-    config = config.to_dict()
 
     config["auto_map"] = setting["auto_map"]
     config["architectures"] = setting["architectures"]

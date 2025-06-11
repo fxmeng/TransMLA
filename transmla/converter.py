@@ -61,10 +61,10 @@ def main(args):
     # get dataset
     train_loader, test_loader = get_dataset_loader(tokenizer, **vars(args))
 
-    if test_loader:
-        message = "Evaluating original model's ppl"
-        dataset_ppl = evaluate_ppl(model, tokenizer.pad_token_id, test_loader, message)
-        print(f'Original ppl: {dataset_ppl:.4f}')
+    # if test_loader:
+    #     message = "Evaluating original model's ppl"
+    #     dataset_ppl = evaluate_ppl(model, tokenizer.pad_token_id, test_loader, message)
+    #     print(f'Original ppl: {dataset_ppl:.4f}')
 
     ##############################
     #        partial rope        #

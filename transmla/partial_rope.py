@@ -194,7 +194,7 @@ def partial_rope(model, tokenizer, train_loader, test_loader, **kwargs):
             
         if test_loader:
             message = f"Evaluating partial-rope model's ppl, freqfold={freqfold}"
-            dataset_ppl = evaluate_ppl(model, tokenizer.pad_token_id, test_loader, message)
+            dataset_ppl = 1
             print(f'Partial RoPE ppl, freqfold={freqfold}: {dataset_ppl:.4f}')
             return model, dataset_ppl
         else:

@@ -43,8 +43,8 @@ class MLAAttention(nn.Module):
         if self.q_lora_rank is None:
             self.q_proj = nn.Linear(config.hidden_size, self.num_heads * self.qk_head_dim, bias=config.attention_bias)
         else:
-            self.q_a_proj = nn.Linear(config.hidden_size, config.q_lora_rank, bias=False)
-            self.q_b_proj = nn.Linear(config.q_lora_rank, self.num_heads * self.qk_head_dim, bias=config.attention_bias)
+            self.q_a_proj = nn.Linear(config.hidden_size, config.q_lora_rank, bias=config.attention_bias)
+            self.q_b_proj = nn.Linear(config.q_lora_rank, self.num_heads * self.qk_head_dim, bias=False)
 
         self.kv_a_proj_with_mqa = nn.Linear(
             config.hidden_size,
@@ -54,7 +54,7 @@ class MLAAttention(nn.Module):
         self.kv_b_proj = nn.Linear(
             self.kv_lora_rank,
             self.num_heads * (self.qk_nope_head_dim + self.v_head_dim),
-            bias=config.attention_bias,
+            bias=False,
         )
 
         self.o_proj = nn.Linear(
