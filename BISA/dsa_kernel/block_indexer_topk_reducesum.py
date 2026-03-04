@@ -7,6 +7,8 @@ import tilelang
 import tilelang.language as T
 from typing import Optional
 
+from index import prepare_token_indices
+
 BF16 = "bfloat16"
 FP32 = "float32"
 INT32 = "int32"
