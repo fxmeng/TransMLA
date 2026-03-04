@@ -3,7 +3,7 @@ import torch
 import torch.nn.functional as F
 from einops import einsum
 
-import tilelang as tl
+import tilelang
 import tilelang.language as T
 from typing import Optional
 from index import prepare_token_indices
