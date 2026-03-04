@@ -337,4 +337,6 @@ def indexer_topk_reducesum_interface(
                 all_topk_indices[global_start:global_end] = topk_global_indices
                 all_topk_score[global_start:global_end] = topk_final_scores
 
+    all_topk_indices = all_topk_indices.to(torch.int32)
+
     return all_topk_indices, all_topk_score
